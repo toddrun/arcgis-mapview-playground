@@ -2,7 +2,7 @@ import React from 'react';
 import MainView from './mainview';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
-import './style';
+import './style.css';
 
 export const App: React.FC = () => {
   return (

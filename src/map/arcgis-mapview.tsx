@@ -21,7 +21,7 @@ const ArcgisMapview: React.FC = () => {
           lods: TileInfo.create({
             spatialReference: SpatialReference.WGS84,
           }).lods,
-          minZoom: 2,
+          minZoom: 4,
         },
         background: {
           color: [255, 252, 244, 0.5],
