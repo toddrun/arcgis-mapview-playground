@@ -10,10 +10,12 @@ import { deckglUSArecords } from '../helpers/map-records';
 const ArcgisMapview: React.FC = () => {
   const mapRef = useRef(null);
   const [mapView, setMapView] = useState<MapView|undefined>(undefined);
+  const [deckLayer, setDeckLayer] = useState<DeckLayer|undefined>(undefined);
 
   useEffect(() => {
     if (mapRef.current) {
-      const deckLayer = new DeckLayer({
+      console.log('@- setting map view: ');
+      const deckLLayer = new DeckLayer({
         'deck.layers': [
           new ScatterplotLayer({
             data: deckglUSArecords,
@@ -21,13 +23,24 @@ const ArcgisMapview: React.FC = () => {
             getColor: [255, 0, 0],
             radiusMinPixels: 5
           })
-        ]
+        ],
+        'deck.getCursor': ({ isDragging }) => (isDragging ? 'grabbing' : 'inherit'),
+        'deck.getTooltip': ({ object }) => (object?.tooltip && {
+          html: `<p>${object.tooltip}</p>`,
+          style: {
+            backgroundColor: '#fcfcfc',
+            color: '#060606',
+            fontSize: '1em',
+            lineHeight: '0.3em',
+            padding: '0 10px',
+          },
+        }),
       });
 
       // Create map
       const map = new Map({
         basemap: 'satellite',
-        layers: [deckLayer],
+        layers: [deckLLayer],
       });
 
       // Create view
@@ -44,8 +57,22 @@ const ArcgisMapview: React.FC = () => {
           color: [255, 252, 244, 0.5],
         },
       });
+      setMapView(view);
+      setDeckLayer(deckLLayer);
     }
   }, []);
+
+  useEffect(() => {
+    if (mapView) {
+      mapView.when(() => {
+        console.log('re-rendering map view')
+/*         [].filter((p) => p.onChange)
+          .forEach((plugin) => {
+            plugin.onChange?.(mapView);
+          }); */
+      });
+    }
+  });
 
   return <div className="map-view" ref={mapRef} />;
 };
