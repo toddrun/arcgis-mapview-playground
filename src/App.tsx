@@ -1,5 +1,5 @@
 import React from 'react';
-import MainView from './mainview';
+import MainView from './main-view';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
 import './style.css';

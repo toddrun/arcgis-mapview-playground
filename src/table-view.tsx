@@ -1,14 +1,14 @@
 import React from 'react';
 
 // Assume each row of data has an 'id' property
-type TableRowData = {
+export type TableRowData = {
   id: number;
   [key: string]: any; // Additional properties of the row
 };
 
 type TableProps = {
   data: TableRowData[];
-  handleRowHover: (rowId: number) => void;
+  handleRowHover: (row: TableRowData) => void;
 };
 
 const TableView: React.FC<TableProps> = ({ data, handleRowHover }) => {
@@ -24,7 +24,7 @@ const TableView: React.FC<TableProps> = ({ data, handleRowHover }) => {
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} onMouseOver={() => handleRowHover(row.id)}>
+            <tr key={row.id} onMouseOver={() => handleRowHover(row)}>
               {Object.entries(row).map(([key, value], index) =>
                 // Exclude the id from being displayed in the table cell
                 key !== 'id' ? <td key={key}>{value}</td> : null
