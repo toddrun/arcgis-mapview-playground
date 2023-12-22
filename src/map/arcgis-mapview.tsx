@@ -6,11 +6,25 @@ import SpatialReference from '@arcgis/core/geometry/SpatialReference.js';
 import {DeckLayer} from '@deck.gl/arcgis';
 import TileInfo from '@arcgis/core/layers/support/TileInfo.js';
 import { deckglUSArecords } from '../helpers/map-records';
+import { MIN_ZOOM, MapPlugin } from './arcgis-types';
+export interface Extents {
+  latitude: number,
+  longitude: number,
+  zoom: number,
+  searchZoom: number,
+  initialZoom: number,
+}
 
-const ArcgisMapview: React.FC = () => {
+interface Props {
+  extents?: Extents,
+  plugins?: MapPlugin[],
+}
+
+const ArcgisMapview: React.FC<Props> = ({  plugins = [],}) => {
   const mapRef = useRef(null);
   const [mapView, setMapView] = useState<MapView|undefined>(undefined);
   const [deckLayer, setDeckLayer] = useState<DeckLayer|undefined>(undefined);
+  const allPlugins = [...plugins];
 
   useEffect(() => {
     if (mapRef.current) {
@@ -51,11 +65,14 @@ const ArcgisMapview: React.FC = () => {
           lods: TileInfo.create({
             spatialReference: SpatialReference.WGS84,
           }).lods,
-          minZoom: 4,
+          minZoom: MIN_ZOOM,
         },
         background: {
           color: [255, 252, 244, 0.5],
         },
+      });
+      allPlugins.forEach((plugin) => {
+        plugin.extendMap?.(view, deckLayer);
       });
       setMapView(view);
       setDeckLayer(deckLLayer);
@@ -64,8 +81,21 @@ const ArcgisMapview: React.FC = () => {
 
   useEffect(() => {
     if (mapView) {
+      console.log("@@ @arcgis-mapview | refreshing Map")
+      // Check with plugins to update the maps Layers. If any plugin wants to update the layers
+      // set the layers property on the map. This prevents excessive re-rendering of the map
+      const pluginsWantingRerender = allPlugins
+        .filter((p) => !!p.shouldRerender?.(mapView));
+      if (pluginsWantingRerender.length > 0) {
+        applyLayers(mapView);
+      }
+    }
+  }, [allPlugins]);
+
+  useEffect(() => {
+    if (mapView) {
       mapView.when(() => {
-        console.log('re-rendering map view')
+        console.log('@ re-rendering map view')
 /*         [].filter((p) => p.onChange)
           .forEach((plugin) => {
             plugin.onChange?.(mapView);
@@ -75,6 +105,14 @@ const ArcgisMapview: React.FC = () => {
   });
 
   return <div className="map-view" ref={mapRef} />;
+};
+
+const applyLayers = (
+  mapView: MapView,
+) => {
+  const currDeckLayer = mapView?.map.layers.filter((layer) => 'deck' in layer).getItemAt(0);
+  mapView.map.layers.removeMany([currDeckLayer]);
+  mapView?.map.addMany([currDeckLayer], 0);
 };
 
 export default ArcgisMapview;
