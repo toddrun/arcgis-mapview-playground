@@ -15,7 +15,7 @@ interface MainViewState {
 }
 
 const MainView: React.FC = () => {
-  console.log('rendering mainview...')
+  // console.log('rendering mainview...')
 
   const [state, setState] = useState<MainViewState | undefined>(undefined);
 
@@ -25,12 +25,12 @@ const MainView: React.FC = () => {
   }
 
   const refresh = () => {
-    console.log('@@: main-view | refresh just called')
+    // console.log('@@: main-view | refresh just called')
     setState({...state, requestUpdateLayers: true})
   }
 
   const handleMapExtentsChange = (center, zoom, bounds) => {
-    console.log('@@: plugin just called: ', center, zoom, bounds.getSouthWest(), bounds.getNorthEast())
+    // console.log('@@: plugin just called: ', center, zoom, bounds.getSouthWest(), bounds.getNorthEast())
     setState({ ...state, center, zoom, bounds})
     refresh();
   }
@@ -38,7 +38,7 @@ const MainView: React.FC = () => {
   const plugins = [
     OnExtentsChange(handleMapExtentsChange),
     renderLayers(() => {
-      console.log('@ !!! renderLayers |  calling shouldrefresh');
+      // console.log('@ !!! renderLayers |  calling shouldrefresh');
       const shouldRefresh = state?.requestUpdateLayers ?? false;
       if (shouldRefresh) {
         setState({  ...state, requestUpdateLayers: false });

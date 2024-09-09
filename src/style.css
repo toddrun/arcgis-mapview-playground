@@ -15,6 +15,24 @@ h1 {
   font-size: 1.5rem;
 }
 
+.submit-button {
+  margin: 10px;
+  text-align: center;
+}
+
+.entry-item {
+  display: flex;
+  flex-direction: row;
+}
+
+.entry-item input {
+  margin: 10px;
+}
+
+.entry-item label {
+  margin-top: 10px;
+}
+
 .App {
   display: flex;
   flex-direction: column;
@@ -45,6 +63,7 @@ h1 {
 .sidebar {
   background-color: #e9ecef;
   overflow-y: auto;
+  width: 30%
 }
 
 .main-view {

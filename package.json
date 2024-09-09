@@ -25,7 +25,9 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "react-scripts": "latest"
+    "react-scripts": "latest",
+    "typescript": "^5.5.4",
+    "@babel/plugin-proposal-private-property-in-object": "latest"
   },
   "browserslist": {
     "production": [

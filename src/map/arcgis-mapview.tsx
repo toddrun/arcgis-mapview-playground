@@ -28,7 +28,7 @@ const ArcgisMapview: React.FC<Props> = ({  plugins = [],}) => {
 
   useEffect(() => {
     if (mapRef.current) {
-      console.log('@- setting map view: ');
+      // console.log('@- setting map view: ');
       const deckLLayer = new DeckLayer({
         'deck.layers': [
           new ScatterplotLayer({
@@ -81,7 +81,7 @@ const ArcgisMapview: React.FC<Props> = ({  plugins = [],}) => {
 
   useEffect(() => {
     if (mapView) {
-      console.log("@@ @arcgis-mapview | refreshing Map")
+      // console.log("@@ @arcgis-mapview | refreshing Map")
       // Check with plugins to update the maps Layers. If any plugin wants to update the layers
       // set the layers property on the map. This prevents excessive re-rendering of the map
       const pluginsWantingRerender = allPlugins
@@ -91,18 +91,6 @@ const ArcgisMapview: React.FC<Props> = ({  plugins = [],}) => {
       }
     }
   }, [allPlugins]);
-
-  useEffect(() => {
-    if (mapView) {
-      mapView.when(() => {
-        console.log('@ re-rendering map view')
-/*         [].filter((p) => p.onChange)
-          .forEach((plugin) => {
-            plugin.onChange?.(mapView);
-          }); */
-      });
-    }
-  });
 
   return <div className="map-view" ref={mapRef} />;
 };
