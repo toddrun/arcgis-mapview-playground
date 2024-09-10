@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@arcgis/core": "^4.28.10",
+    "@arcgis/core": "^4.30.6",
     "@deck.gl/arcgis": "~8.7.12",
     "@deck.gl/core": "~8.7.12",
     "@deck.gl/extensions": "~8.7.12",
