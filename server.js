@@ -9,5 +9,5 @@ app.listen(8080, () => {
 app.get('/', express.static(path.join(__dirname, 'client/build')));
 
 app.get('/oauth/arcgis/callback', (req, res) => {
-  res.send("<html></html>")
+  res.sendFile(path.join(__dirname, 'oauth-callback.html'));
 });
