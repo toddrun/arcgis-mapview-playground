@@ -2,6 +2,7 @@ import ArcGisLayer from '@arcgis/core/layers/Layer';
 import esriConfig from '@arcgis/core/config';
 import identityManager from '@arcgis/core/identity/IdentityManager';
 import OAuthInfo from '@arcgis/core/identity/OAuthInfo';
+import calculateWindowFeatures from './helpers/calculate-window-features';
 
 export const DEFAULT_PORTAL_URL = 'https://www.arcgis.com';
 
@@ -18,6 +19,7 @@ const ArcGisConnection = (
     portalUrl,
     popup: true,
     popupCallbackUrl: '/oauth/arcgis/callback',
+    popupWindowFeatures: calculateWindowFeatures(),
   });
 
   identityManager.registerOAuthInfos([oAuthInfo]);
@@ -32,7 +34,6 @@ const ArcGisConnection = (
     } catch (err) {
       console.log("ERRRREEEED", err)
     }
-   
 
     return credentials.token;
   };
