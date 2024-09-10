@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import tableData from './helpers/table-rowdata';
 import ArcgisMapview from './map/arcgis-mapview';
-import TableView, { TableRowData } from './table-view';
 import OnExtentsChange from './plugins/on-extents-change';
 import { Bounds } from './map/arcgis-types';
 import renderLayers from './plugins/render-layers';
@@ -18,11 +16,6 @@ const MainView: React.FC = () => {
   // console.log('rendering mainview...')
 
   const [state, setState] = useState<MainViewState | undefined>(undefined);
-
-
-  const handleRowHover = (row: TableRowData) => { 
-    setState({ ...state, selectedRecordId: row.id})
-  }
 
   const refresh = () => {
     // console.log('@@: main-view | refresh just called')
@@ -49,7 +42,6 @@ const MainView: React.FC = () => {
   return (
     <main className="main-view">
       <ArcgisMapview plugins={plugins}/>
-      <TableView data={tableData} handleRowHover={ handleRowHover} />
     </main>
   );
 };
