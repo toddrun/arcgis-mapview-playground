@@ -18,6 +18,7 @@ const ArcGisConnection = (
     flowType: 'authorization-code',
     portalUrl,
     popup: true,
+    popupCallbackUrl: process.env.PUBLIC_URL + "/oauth.html",
     popupWindowFeatures: calculateWindowFeatures(),
   });
 
@@ -28,9 +29,8 @@ const ArcGisConnection = (
 
   const getAuthToken = async (): Promise<string> => {
     esriConfig.apiKey = esriApiKey;
-    console.log('getting creds');
     credentials = await identityManager.getCredential(sharingUrl);
-    console.log('got creds');
+
     return credentials?.token;
   };
 

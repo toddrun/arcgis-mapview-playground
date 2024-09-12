@@ -63,7 +63,7 @@ h1 {
 .sidebar {
   background-color: #e9ecef;
   overflow-y: auto;
-  width: 30%
+  width: 60%
 }
 
 .main-view {
@@ -77,16 +77,6 @@ h1 {
 .map-view {
   flex-grow: 2; /* Adjust the ratio as needed */
   background-color: #d3d3d3;
-}
-
-.table-wrapper {
-  height: 30%;
-  overflow-y: auto;
-}
-
-.table-view {
-  background-color: #ffffff;
-  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 table {
@@ -113,4 +103,8 @@ td {
 
 tbody tr:hover {
   background-color: #e2e2e2; /* Slightly darker color on hover */
+}
+
+.half-column {
+  width: 50%
 }
