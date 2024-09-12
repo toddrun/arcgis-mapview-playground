@@ -9,6 +9,7 @@ const Sidebar = () => {
   const [enterpriseAppId, setEnterpriseAppId] = useState('');
   const [enterprisePortalUrl, setEnterprisePortalUrl] = useState('');
   const [onlineAuthToken, setOnlineAuthToken] = useState('');
+  const [enterpriseAuthToken, setEnterpriseAuthToken] = useState('');
 
   const buildEntryItem = (label: string, value: string, setter: Dispatch<SetStateAction<string>>) => (
     <div className='entry-item'>
@@ -28,7 +29,7 @@ const Sidebar = () => {
     const connection = ArcGisConnection(esriApiKey, onlineAppId, DEFAULT_PORTAL_URL);
     const authToken = await connection.getAuthToken();
     console.log("Here we be");
-    console.log("Online Layer Ids", ArcGisLayerIds(connection, esriApiKey, DEFAULT_PORTAL_URL));
+    console.log("Online Layer Ids", await ArcGisLayerIds(esriApiKey, DEFAULT_PORTAL_URL).fetchLayerIds());
     setOnlineAuthToken(authToken);
   }
 
@@ -36,8 +37,8 @@ const Sidebar = () => {
     const connection = ArcGisConnection(esriApiKey, enterpriseAppId, enterprisePortalUrl);
     const authToken = await connection.getAuthToken();
     console.log("We're in business!");
-    console.log("Enterprise Layer Ids", ArcGisLayerIds(connection, esriApiKey, enterprisePortalUrl));
-    setOnlineAuthToken(authToken);
+    console.log("Enterprise Layer Ids", await ArcGisLayerIds(esriApiKey, enterprisePortalUrl).fetchLayerIds());
+    setEnterpriseAuthToken(authToken);
   }
 
   const connectButton = (connectFunction, type) => (

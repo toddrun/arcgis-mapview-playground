@@ -4,7 +4,7 @@ import esriConfig from '@arcgis/core/config';
 import Portal from '@arcgis/core/portal/Portal';
 import PortalQueryParams from '@arcgis/core/portal/PortalQueryParams';
 
-const ArcGisLayerIds = (connection, esriApiKey, portalUrl) => {
+const ArcGisLayerIds = (esriApiKey, portalUrl) => {
   const isOnline = portalUrl === DEFAULT_PORTAL_URL;
 
   const prepareGlobalSettings = () => {
@@ -42,6 +42,8 @@ const ArcGisLayerIds = (connection, esriApiKey, portalUrl) => {
     if (response.results.length > 0) {
       return { total: response.total, layers: response.results.map((layer) => layer.id) };
     }
+
+    resetGlobalSettings();
 
     return { total: response.total, layers: [] };
   }

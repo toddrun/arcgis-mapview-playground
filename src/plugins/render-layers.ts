@@ -4,7 +4,7 @@ import { MapPlugin } from "../map/arcgis-types";
 const RenderLayers: (
   shouldRerender?: () => boolean,
 ) => MapPlugin = (
-  shouldRerender = () => false,
+  shouldRerender = () => true,
 ) => {
   return {
     shouldRerender: (mapView) => shouldRerender(),

@@ -18,7 +18,6 @@ const ArcGisConnection = (
     flowType: 'authorization-code',
     portalUrl,
     popup: true,
-    popupCallbackUrl: '/oauth/arcgis/callback',
     popupWindowFeatures: calculateWindowFeatures(),
   });
 
@@ -28,14 +27,11 @@ const ArcGisConnection = (
   const sharingUrl = `${portalUrl}/sharing`;
 
   const getAuthToken = async (): Promise<string> => {
-    try {
-      esriConfig.apiKey = esriApiKey;
-      credentials = await identityManager.getCredential(sharingUrl);
-    } catch (err) {
-      console.log("ERRRREEEED", err)
-    }
-
-    return credentials.token;
+    esriConfig.apiKey = esriApiKey;
+    console.log('getting creds');
+    credentials = await identityManager.getCredential(sharingUrl);
+    console.log('got creds');
+    return credentials?.token;
   };
 
   const fetchLayer = async (layerId: string, baseURL: string): Promise<ArcGisLayer> => {
