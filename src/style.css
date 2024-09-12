@@ -108,3 +108,7 @@ tbody tr:hover {
 .half-column {
   width: 50%
 }
+
+.layer {
+  font-size: xx-small;
+}

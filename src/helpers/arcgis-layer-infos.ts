@@ -41,7 +41,7 @@ const ArcGisLayerInfos = (esriApiKey, portalUrl) => {
 
     resetGlobalSettings();
 
-    return response.results.length > 0 ? response.results.map((layer) => ({ id: layer.id, name: layer.name })) : [];
+    return response.results.length > 0 ? response.results.map((layer) => ({ id: layer.id, title: layer.title })) : [];
   }
 
   return { fetchLayerIds }

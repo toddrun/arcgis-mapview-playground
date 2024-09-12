@@ -12,6 +12,9 @@ const Sidebar = () => {
   const [enterpriseAuthToken, setEnterpriseAuthToken] = useState('');
   const [onlineLayers, setOnlineLayers] = useState([]);
   const [enterpriseLayers, setEnterpriseLayers] = useState([]);
+  const [selectedOnlineLayers, setSelectedOnlineLayers] = useState([]);
+  const [selectedEnterpriseLayers, setSelectedEnterpriseLayers] = useState([]);
+
 
   const buildEntryItem = (label: string, value: string, setter: Dispatch<SetStateAction<string>>) => (
     <div className='entry-item'>
@@ -43,26 +46,80 @@ const Sidebar = () => {
     setEnterpriseLayers(layers);
   }
 
-  const connectButton = (connectFunction, type) => (
-    <button onClick={connectFunction}>Connect to {type}!</button>
-  )
+  const connectButton = (connectFunction, type) => {
+    const authToken = type === 'Online' ? onlineAuthToken : enterpriseAuthToken;
 
-  const renderLayerList = (layers) => (
-    <ul>
-      { layers?.map((layer) => (<li key={layer.id}>{layer.name}</li>))}
-    </ul>
-  )
-
-  const submitButton = () => {
-    if (esriApiKey) {
-      return (
-        <div className='submit-button'>
-          <button onClick={() => console.log(esriApiKey)}>Connect!</button>
-        </div>
-      )
-    }
-    return undefined;
+    return <button onClick={connectFunction} disabled={!!authToken}>Connect to {type}!</button>
   }
+
+  const updateSelectedLayers = (layerId, selectedLayers, setSelectedLayers) => {
+    const layers = [...selectedLayers]
+    const position = layers.indexOf(layerId);
+
+    position < 0 ? layers.push(layerId) : layers.splice(position, 1);
+    setSelectedLayers(layers);
+  }
+
+  const renderLayerList = (layers, type) => {
+    if (layers.length === 0) {
+      return <div>&nbsp;</div>;
+    }
+
+    const selectedLayers = type === 'Online' ? selectedOnlineLayers : selectedEnterpriseLayers;
+    const setSelectedLayers = type === 'Online' ? setSelectedOnlineLayers : setSelectedEnterpriseLayers;
+
+    // Render the first 5 only
+    return <ul>
+      { layers?.slice(0, 5)?.map((layer) => (
+          <li key={layer.id} className="layer">
+            <input
+              type="checkbox"
+              onChange={
+                () => updateSelectedLayers(layer.id, selectedLayers, setSelectedLayers)
+              }>
+            </input>
+            {layer.title}
+          </li>
+      ))}
+    </ul>
+  }
+
+  const buttonText = (selectedLayers, type) => {
+    const len = selectedLayers.length;
+    const layers = len > 1 ? "layers" : "layer";
+    return len > 0 ? `${len} ${type} ${layers}` : undefined;
+  }
+
+  const sendPayload = () => {
+    const payload = {
+      online: {
+        esriApiKey,
+        id: onlineAppId,
+        layers: selectedOnlineLayers
+      },
+      enterprise: {
+        id: enterpriseAppId,
+        portalUrl: enterprisePortalUrl,
+        layers: selectedEnterpriseLayers
+      }
+    }
+  }
+
+  const loadLayersButton = () => {
+    const textParts = [];
+    const onlineText = buttonText(selectedOnlineLayers, 'Online');
+    const enterpriseText = buttonText(selectedEnterpriseLayers, 'Enterprise');
+    if (onlineText) {
+      textParts.push(onlineText)
+    }
+    if (enterpriseText) {
+      textParts.push(enterpriseText)
+    }
+
+    return <div className='submit-button'>
+      <button onClick={sendPayload}>Load {textParts.join(" and ")}</button>
+    </div>
+  };
 
   return (
     <div  className="sidebar">
@@ -84,14 +141,20 @@ const Sidebar = () => {
             <td>{ canConnectToEnterprise() && connectButton(connectToEnteprise, 'Enterprise') }</td>
           </tr>
           <tr>
-            <td>{ renderLayerList(onlineLayers)}</td>
-            <td>{ renderLayerList(enterpriseLayers)}</td>
+            <td>{ renderLayerList(onlineLayers, 'Online')}</td>
+            <td>{ renderLayerList(enterpriseLayers, 'Enterprise')}</td>
           </tr>
         </tbody>
       </table>
       
-      { canConnectToEnterprise() && connectButton(connectToEnteprise, 'Enterprise') }
-      { canConnectToOnline() && canConnectToEnterprise() && submitButton() }
+      <ul style={{display: 'none'}}>
+        { selectedOnlineLayers.map((layer) => (<li className={"layer"}>{layer} (agol)</li>))}
+        { selectedEnterpriseLayers.map((layer) => (<li className={"layer"}>{layer} (ent)</li>))}
+      </ul>
+
+      {
+        (selectedOnlineLayers.length > 0 || selectedEnterpriseLayers.length > 0) && loadLayersButton()
+      }
     </div>
   );
 };
