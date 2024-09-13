@@ -8,6 +8,7 @@ import TileInfo from '@arcgis/core/layers/support/TileInfo.js';
 import { deckglUSArecords } from '../helpers/map-records';
 import { MIN_ZOOM, MapPlugin } from './arcgis-types';
 import ArcGISLayerLoader, { LayerSetting } from '../arcgis-layer-loader';
+import { FOCUS_LOCATION } from '../App';
 export interface Extents {
   latitude: number,
   longitude: number,
@@ -75,7 +76,7 @@ const ArcgisMapview: React.FC<Props> = ({  plugins = [], loadedLayers = []}) => 
           }).lods,
           minZoom: MIN_ZOOM,
         },
-        center: [-106.534, 38.794],
+        center: FOCUS_LOCATION,
         background: {
           color: [255, 252, 244, 0.5],
         },

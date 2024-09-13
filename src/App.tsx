@@ -5,6 +5,8 @@ import MainView from './main-view';
 import './style.css';
 import { LayerSetting } from './arcgis-layer-loader';
 
+export const FOCUS_LOCATION = [-106.534, 38.794];
+
 export const App: React.FC = () => {
   const [loadedLayers, setLoadedLayers] = useState<LayerSetting[]>([]);
   const [esriApiKey, setEsriApiKey] = useState('');
