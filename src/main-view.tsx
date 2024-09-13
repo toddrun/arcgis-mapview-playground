@@ -17,7 +17,7 @@ interface Props {
   loadedLayers: LayerSetting[];
 }
 
-const MainView: React.FC<Props> = (loadedLayers) => {
+const MainView: React.FC<Props> = ({loadedLayers}) => {
   // console.log('rendering mainview...')
 
   const [state, setState] = useState<MainViewState | undefined>(undefined);

@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import ArcGisConnection, { DEFAULT_PORTAL_URL } from './arcgis-connection';
 import ArcGisLayerInfos from './helpers/arcgis-layer-infos';
 
-const Sidebar = (setLoadedLayers) => {
+const Sidebar = ({setLoadedLayers}) => {
 
   const [esriApiKey, setEsriApiKey] = useState('');
   const [onlineAppId, setOnlineAppId] = useState('');

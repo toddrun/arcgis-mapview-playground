@@ -22,7 +22,9 @@ const ArcGisConnection = (
     popupWindowFeatures: calculateWindowFeatures(),
   });
 
+  console.log("OAuthInfo:", oAuthInfo, popupCallbackUrl, "Appid:", appId, portalUrl);
   identityManager.registerOAuthInfos([oAuthInfo]);
+  console.log("Registered");
 
   const isOnline = portalUrl === DEFAULT_PORTAL_URL;
   const sharingUrl = `${portalUrl}/sharing`;
