@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import ArcGisConnection, { DEFAULT_PORTAL_URL } from './arcgis-connection';
-import ArcGisLayerInfos from './helpers/arcgis-layer-infos';
+import ArcGisLayerInfos from './arcgis-layer-infos';
+import { LayerSetting } from './arcgis-layer-loader';
 
 const Sidebar = ({setLoadedLayers}) => {
 
@@ -90,8 +91,17 @@ const Sidebar = ({setLoadedLayers}) => {
     return len > 0 ? `${len} ${type} ${layers}` : undefined;
   }
 
+  const getSelectedLayers = (selectedLayers, fullLayers) => (
+    selectedLayers.map((id) => {
+      return fullLayers.find((layer) => layer.id === id);
+    })
+  )
+
   const sendLoadedLayers = () => {
-    setLoadedLayers([...selectedOnlineLayers, ...selectedEnterpriseLayers])
+    setLoadedLayers([
+      ...getSelectedLayers(selectedOnlineLayers, onlineLayers),
+      ...getSelectedLayers(selectedEnterpriseLayers, enterpriseLayers)
+    ])
   }
 
   const loadLayersButton = () => {

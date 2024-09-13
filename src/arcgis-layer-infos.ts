@@ -1,9 +1,8 @@
-import { DEFAULT_PORTAL_URL } from "../arcgis-connection";
-
+import { DEFAULT_PORTAL_URL } from "./arcgis-connection";
 import esriConfig from '@arcgis/core/config';
 import Portal from '@arcgis/core/portal/Portal';
 import PortalQueryParams from '@arcgis/core/portal/PortalQueryParams';
-import { LayerSetting } from "../arcgis-layer-loader";
+import { LayerSetting } from "./arcgis-layer-loader";
 
 const ArcGisLayerInfos = (esriApiKey, appId, portalUrl) => {
   const isOnline = portalUrl === DEFAULT_PORTAL_URL;
