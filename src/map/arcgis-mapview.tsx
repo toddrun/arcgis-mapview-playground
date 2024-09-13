@@ -7,6 +7,7 @@ import {DeckLayer} from '@deck.gl/arcgis';
 import TileInfo from '@arcgis/core/layers/support/TileInfo.js';
 import { deckglUSArecords } from '../helpers/map-records';
 import { MIN_ZOOM, MapPlugin } from './arcgis-types';
+import ArcGISLayerLoader, { LayerSetting } from '../arcgis-layer-loader';
 export interface Extents {
   latitude: number,
   longitude: number,
@@ -18,13 +19,20 @@ export interface Extents {
 interface Props {
   extents?: Extents,
   plugins?: MapPlugin[],
+  loadedLayers?: LayerSetting[],
 }
 
-const ArcgisMapview: React.FC<Props> = ({  plugins = [],}) => {
+const ArcgisMapview: React.FC<Props> = ({  plugins = [], loadedLayers = []}) => {
   const mapRef = useRef(null);
   const [mapView, setMapView] = useState<MapView|undefined>(undefined);
   const [deckLayer, setDeckLayer] = useState<DeckLayer|undefined>(undefined);
   const allPlugins = [...plugins];
+
+  useEffect(() => {
+    if (loadedLayers.length > 0) {
+      ArcGISLayerLoader(mapView).loadAll(loadedLayers)
+    }
+  }, [loadedLayers])
 
   useEffect(() => {
     if (mapRef.current) {

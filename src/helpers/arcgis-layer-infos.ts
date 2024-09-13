@@ -3,8 +3,9 @@ import { DEFAULT_PORTAL_URL } from "../arcgis-connection";
 import esriConfig from '@arcgis/core/config';
 import Portal from '@arcgis/core/portal/Portal';
 import PortalQueryParams from '@arcgis/core/portal/PortalQueryParams';
+import { LayerSetting } from "../arcgis-layer-loader";
 
-const ArcGisLayerInfos = (esriApiKey, portalUrl) => {
+const ArcGisLayerInfos = (esriApiKey, appId, portalUrl) => {
   const isOnline = portalUrl === DEFAULT_PORTAL_URL;
 
   const prepareGlobalSettings = () => {
@@ -21,7 +22,7 @@ const ArcGisLayerInfos = (esriApiKey, portalUrl) => {
     return esriConfig.portalUrl = DEFAULT_PORTAL_URL;
   };
 
-  const fetchLayerIds = async () => {
+  const fetchLayerInfos = async () => {
     prepareGlobalSettings();
 
     const portal = new Portal();
@@ -41,10 +42,19 @@ const ArcGisLayerInfos = (esriApiKey, portalUrl) => {
 
     resetGlobalSettings();
 
-    return response.results.length > 0 ? response.results.map((layer) => ({ id: layer.id, title: layer.title })) : [];
+    return response.results.length > 0 ? response.results.map((layer): LayerSetting => (
+      {
+        id: layer.id,
+        title: layer.title,
+        esriApiKey,
+        esriAppId: appId,
+        esriPortalUrl: portalUrl,
+        baseURL: layer.itemUrl,
+      }
+    )) : [];
   }
 
-  return { fetchLayerIds }
+  return { fetchLayerInfos }
 }
 
 export default ArcGisLayerInfos;

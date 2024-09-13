@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import ArcGisConnection, { DEFAULT_PORTAL_URL } from './arcgis-connection';
 import ArcGisLayerInfos from './helpers/arcgis-layer-infos';
 
-const Sidebar = () => {
+const Sidebar = (setLoadedLayers) => {
 
   const [esriApiKey, setEsriApiKey] = useState('');
   const [onlineAppId, setOnlineAppId] = useState('');
@@ -33,7 +33,7 @@ const Sidebar = () => {
   const connectToOnline = async () => {
     const connection = ArcGisConnection(esriApiKey, onlineAppId, DEFAULT_PORTAL_URL);
     const authToken = await connection.getAuthToken();
-    const layers = await ArcGisLayerInfos(esriApiKey, DEFAULT_PORTAL_URL).fetchLayerIds();
+    const layers = await ArcGisLayerInfos(esriApiKey, onlineAppId, DEFAULT_PORTAL_URL).fetchLayerInfos();
     setOnlineAuthToken(authToken);
     setOnlineLayers(layers);
   }
@@ -41,7 +41,7 @@ const Sidebar = () => {
   const connectToEnteprise = async () => {
     const connection = ArcGisConnection(esriApiKey, enterpriseAppId, enterprisePortalUrl);
     const authToken = await connection.getAuthToken();
-    const layers = await ArcGisLayerInfos(esriApiKey, enterprisePortalUrl).fetchLayerIds();
+    const layers = await ArcGisLayerInfos(esriApiKey, enterpriseAppId, enterprisePortalUrl).fetchLayerInfos();
     setEnterpriseAuthToken(authToken);
     setEnterpriseLayers(layers);
   }
@@ -90,19 +90,8 @@ const Sidebar = () => {
     return len > 0 ? `${len} ${type} ${layers}` : undefined;
   }
 
-  const sendPayload = () => {
-    const payload = {
-      online: {
-        esriApiKey,
-        id: onlineAppId,
-        layers: selectedOnlineLayers
-      },
-      enterprise: {
-        id: enterpriseAppId,
-        portalUrl: enterprisePortalUrl,
-        layers: selectedEnterpriseLayers
-      }
-    }
+  const sendLoadedLayers = () => {
+    setLoadedLayers([...selectedOnlineLayers, ...selectedEnterpriseLayers])
   }
 
   const loadLayersButton = () => {
@@ -117,7 +106,7 @@ const Sidebar = () => {
     }
 
     return <div className='submit-button'>
-      <button onClick={sendPayload}>Load {textParts.join(" and ")}</button>
+      <button onClick={sendLoadedLayers}>Load {textParts.join(" and ")}</button>
     </div>
   };
 
@@ -153,7 +142,8 @@ const Sidebar = () => {
       </ul>
 
       {
-        (selectedOnlineLayers.length > 0 || selectedEnterpriseLayers.length > 0) && loadLayersButton()
+        (selectedOnlineLayers.length > 0 || selectedEnterpriseLayers.length > 0)
+          && loadLayersButton()
       }
     </div>
   );

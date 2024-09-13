@@ -3,6 +3,7 @@ import ArcgisMapview from './map/arcgis-mapview';
 import OnExtentsChange from './plugins/on-extents-change';
 import { Bounds } from './map/arcgis-types';
 import renderLayers from './plugins/render-layers';
+import { LayerSetting } from './arcgis-layer-loader';
 
 interface MainViewState {
   selectedRecordId: number;
@@ -12,7 +13,11 @@ interface MainViewState {
   bounds: Bounds;
 }
 
-const MainView: React.FC = () => {
+interface Props {
+  loadedLayers: LayerSetting[];
+}
+
+const MainView: React.FC<Props> = (loadedLayers) => {
   // console.log('rendering mainview...')
 
   const [state, setState] = useState<MainViewState | undefined>(undefined);
@@ -41,7 +46,7 @@ const MainView: React.FC = () => {
   ]
   return (
     <main className="main-view">
-      <ArcgisMapview plugins={plugins}/>
+      <ArcgisMapview plugins={plugins} loadedLayers={loadedLayers} />
     </main>
   );
 };
