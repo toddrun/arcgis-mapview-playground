@@ -7,6 +7,7 @@ import { LayerSetting } from './arcgis-layer-loader';
 
 export const App: React.FC = () => {
   const [loadedLayers, setLoadedLayers] = useState<LayerSetting[]>([]);
+  const [esriApiKey, setEsriApiKey] = useState('');
 
   useEffect(() => {
     identityManager.destroyCredentials();
@@ -15,8 +16,8 @@ export const App: React.FC = () => {
   return (
     <div className="App">
       <div className="content">
-        <Sidebar setLoadedLayers={setLoadedLayers} />
-        <MainView loadedLayers={loadedLayers} />
+        <Sidebar esriApiKey={esriApiKey} setEsriApiKey={setEsriApiKey} setLoadedLayers={setLoadedLayers} />
+        { esriApiKey && <MainView loadedLayers={loadedLayers} /> }
       </div>
     </div>
   );

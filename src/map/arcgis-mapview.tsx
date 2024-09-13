@@ -61,7 +61,7 @@ const ArcgisMapview: React.FC<Props> = ({  plugins = [], loadedLayers = []}) => 
 
       // Create map
       const map = new Map({
-        basemap: 'satellite',
+        basemap: 'arcgis/navigation',
         layers: [deckLLayer],
       });
 
@@ -75,6 +75,7 @@ const ArcgisMapview: React.FC<Props> = ({  plugins = [], loadedLayers = []}) => 
           }).lods,
           minZoom: MIN_ZOOM,
         },
+        center: [-106.534, 38.794],
         background: {
           color: [255, 252, 244, 0.5],
         },
