@@ -1,5 +1,5 @@
 import MapView from "@arcgis/core/views/MapView";
-import ArcGisConnection from "./arcgis-connection";
+import ArcGisConnection, { DEFAULT_PORTAL_URL } from "./arcgis-connection";
 
 export interface LayerSetting {
   id: string;
@@ -12,10 +12,10 @@ export interface LayerSetting {
 
 const loadLayer = (layer: LayerSetting) => {
   const { id, esriApiKey, esriAppId, esriPortalUrl, baseURL } = layer;
-  const isOnline = !layer.esriPortalUrl; // We don't set this on 
+  const isOnline = !layer.esriPortalUrl; // We don't set this for agol
 
-  const connection = isOnline ? 
-    ArcGisConnection(esriApiKey, esriAppId, undefined) :
+  const connection = isOnline ?
+    ArcGisConnection(esriApiKey, esriAppId, DEFAULT_PORTAL_URL) :
     ArcGisConnection(esriApiKey, esriAppId, esriPortalUrl);
 
     return connection.fetchLayer(id, baseURL);

@@ -42,8 +42,9 @@ const ArcGisLayerInfos = (esriApiKey, appId, portalUrl) => {
 
     resetGlobalSettings();
 
-    return response.results.length > 0 ? response.results.map((layer): LayerSetting => (
-      {
+    return response.results.length > 0 ? response.results.map((layer): LayerSetting => {
+      console.log("Loading the stuff", appId, portalUrl)
+      return {
         id: layer.id,
         title: layer.title,
         esriApiKey,
@@ -51,7 +52,7 @@ const ArcGisLayerInfos = (esriApiKey, appId, portalUrl) => {
         esriPortalUrl: portalUrl,
         baseURL: layer.itemUrl,
       }
-    )) : [];
+    }) : [];
   }
 
   return { fetchLayerInfos }

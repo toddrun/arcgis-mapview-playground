@@ -22,7 +22,7 @@ const ArcGisConnection = (
     popupWindowFeatures: calculateWindowFeatures(),
   });
 
-  console.log("OAuthInfo:", oAuthInfo, popupCallbackUrl, "Appid:", appId, portalUrl);
+  console.log("OAuthInfo:", oAuthInfo, oAuthInfo.popupCallbackUrl, "Appid:", appId, portalUrl);
   identityManager.registerOAuthInfos([oAuthInfo]);
   console.log("Registered");
 
