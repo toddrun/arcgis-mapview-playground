@@ -37,7 +37,7 @@ const ArcGisConnection = (
   const fetchLayer = async (layerId: string, baseURL: string): Promise<ArcGisLayer> => {
     const token = await getAuthToken();
 
-    // This must be set correctly or loading the layer will fail
+    // This is the line that we have trouble with in Fulcrum
     esriConfig.apiKey = isOnline ? '' : esriApiKey;
 
     return ArcGisLayer.fromPortalItem({

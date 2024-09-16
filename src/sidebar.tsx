@@ -169,8 +169,8 @@ const Sidebar: React.FC<Props> = ({esriApiKey, setEsriApiKey, setLoadedLayers}) 
       }
       
       <ul style={{display: 'none'}}>
-        { selectedOnlineLayers.map((layer) => (<li className={"layer"}>{layer} (agol)</li>))}
-        { selectedEnterpriseLayers.map((layer) => (<li className={"layer"}>{layer} (ent)</li>))}
+        { selectedOnlineLayers.map((layer) => (<li key='selectedOnlineLayers' className={"layer"}>{layer} (agol)</li>))}
+        { selectedEnterpriseLayers.map((layer) => (<li key='selectedEnterpriseLayers'  className={"layer"}>{layer} (ent)</li>))}
       </ul>
 
       {
