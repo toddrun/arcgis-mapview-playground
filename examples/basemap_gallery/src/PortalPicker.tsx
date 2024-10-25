@@ -14,6 +14,7 @@ const PortalPicker: React.FC<Props> = ({ basemap, currentBasemap, setBasemap }) 
   }
 
   return <div 
+    data-portal-id={basemap.id}
     className={`${classname} gallery-item`} 
     onClick={() => setBasemap(new Basemap({ portalItem: { id: basemap.id } }))}
   >

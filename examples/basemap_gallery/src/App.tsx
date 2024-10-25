@@ -3,6 +3,7 @@ import ArcgisMapview from "./arcgis/arcgis-mapview";
 import NamePicker from "./NamePicker";
 import PortalPicker from "./PortalPicker";
 import Basemap from "@arcgis/core/Basemap";
+import Page from "./arcgis/Page";
 
 export interface GoToLocation {
   latitude?: number
@@ -82,7 +83,10 @@ function App() {
       <h1>Checkout all the "free" basemaps!</h1>
       <div className="content">
         <div className="basemap-list">
-          <div className="basemap-list-header">Named basemaps</div>
+          <Page
+            label="Named basemaps"
+            source="https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#basemap"
+          />
           {NAMED_BASEMAPS.map((basenameName) => {
             return <NamePicker
               key={basenameName} 
@@ -91,7 +95,10 @@ function App() {
               setBasemap={setBasemap} 
             />
           })}
-          <div className="basemap-list-header">Portal-id basemaps</div>
+          <Page
+            label="Portal-id basemaps"
+            source="https://www.arcgis.com/home/group.html?id=702026e41f6641fb85da88efe79dc166"
+          />
           {PORTAL_BASEMAPS.map((portalBasemap) => {
             return <PortalPicker
               key={portalBasemap.name}
