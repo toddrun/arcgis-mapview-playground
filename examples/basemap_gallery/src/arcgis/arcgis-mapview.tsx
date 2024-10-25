@@ -45,7 +45,7 @@ const ArcgisMapview: React.FC<Props> = ({ basemap }) => {
           color: [255, 252, 244, 0.5],
         },
       });
-      view.watch("extent", function(newValue) {
+      view.watch("extent", function(newValue, oldValue) {
         setExtents(newValue);
       });
 
@@ -60,7 +60,8 @@ const ArcgisMapview: React.FC<Props> = ({ basemap }) => {
         }
       }
     };
-  }, [basemap, extents]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [basemap]);
 
   return <div className="map-view" ref={mapRef} />;
 };

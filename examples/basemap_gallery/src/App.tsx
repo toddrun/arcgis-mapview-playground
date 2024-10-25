@@ -100,6 +100,7 @@ function App() {
               setBasemap={setBasemap}
             />
           })}
+          <div className="basemap-list-header">&nbsp;</div>
         </div>
         <div className="map-view"><ArcgisMapview basemap={basemap} /></div>
       </div>
