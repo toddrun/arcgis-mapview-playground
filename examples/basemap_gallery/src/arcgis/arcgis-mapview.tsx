@@ -3,15 +3,17 @@ import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference.js';
 import TileInfo from '@arcgis/core/layers/support/TileInfo.js';
-
+import Basemap from '@arcgis/core/Basemap';
+import Extent from '@arcgis/core/geometry/Extent';
 interface Props {
-  basemap: string
+  basemap: string | Basemap
 }
 
 const ArcgisMapview: React.FC<Props> = ({ basemap }) => {
   const mapViewRef = useRef<MapView | null>(null);
   const mapRef = useRef(null);
   const [mapView, setMapView] = useState<MapView|undefined>(undefined);
+  const [extents, setExtents] = useState<Extent>(new Extent({}));
 
   const MIN_ZOOM = 4;
 
@@ -38,9 +40,13 @@ const ArcgisMapview: React.FC<Props> = ({ basemap }) => {
           }).lods,
           minZoom: MIN_ZOOM,
         },
+        extent: extents,
         background: {
           color: [255, 252, 244, 0.5],
         },
+      });
+      view.watch("extent", function(newValue) {
+        setExtents(newValue);
       });
 
       mapViewRef.current = view;
@@ -54,7 +60,7 @@ const ArcgisMapview: React.FC<Props> = ({ basemap }) => {
         }
       }
     };
-  }, [basemap]);
+  }, [basemap, extents]);
 
   return <div className="map-view" ref={mapRef} />;
 };
