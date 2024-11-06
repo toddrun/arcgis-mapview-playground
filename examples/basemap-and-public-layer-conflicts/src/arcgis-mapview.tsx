@@ -18,28 +18,28 @@ export const MIN_ZOOM = 4;
 export const FOCUS_LOCATION = [-106.534, 38.794];
 
 interface Props {
-  layerUrl: string;
+  layerUrls: string[];
   esriApiKey: string;
 }
 
-const ArcgisMapview: React.FC<Props> = ({ layerUrl, esriApiKey }) => {
+const ArcgisMapview: React.FC<Props> = ({ layerUrls, esriApiKey }) => {
   const mapRef = useRef(null);
   const [mapView, setMapView] = useState<MapView|undefined>(undefined);
 
   const applyLayers = () => {
-    console.log('LayerUrl being set:', layerUrl);
 
-    mapView.map.set('basemap', 'arcgis-navigation');
-
-    const featureLayer = new FeatureLayer({url: layerUrl});
+    console.log('LayerUrl being set:', layerUrls, esriConfig.apiKey);
+    const featureLayers = layerUrls.map((url) => new FeatureLayer({url}));
 
     mapView.map.layers.removeAll();
-    mapView.map.addMany([featureLayer]);
+    mapView.map.addMany(featureLayers);
   };
 
   useEffect(() => {
     if (mapView) {
       console.log('MapView exists, loading layers', mapView);
+      mapView.map.set('basemap', 'arcgis-navigation');
+
       mapView.when(
         () => { 
         console.log('MapView loaded');
@@ -59,8 +59,7 @@ const ArcgisMapview: React.FC<Props> = ({ layerUrl, esriApiKey }) => {
       // Create view
       const view = new MapView({
         container: mapRef.current,
-        map: new Map({
-          basemap: 'arcgis/navigation',}),
+        map: new Map(),
         constraints: {
           lods: TileInfo.create({
             spatialReference: SpatialReference.WGS84,

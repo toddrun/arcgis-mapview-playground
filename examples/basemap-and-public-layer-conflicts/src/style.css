@@ -21,11 +21,12 @@ h1 {
 }
 
 .entry-item {
-  display: flex;
-  flex-direction: row;
+  display: block;
+  margin: 10px;
+  margin-bottom: 20px;
 }
 
-.entry-item input {
+.entry-item div {
   margin: 10px;
 }
 

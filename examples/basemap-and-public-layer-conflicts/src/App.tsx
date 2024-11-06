@@ -4,14 +4,14 @@ import MainView from './main-view';
 import './style.css';
 
 export const App: React.FC = () => {
-  const [layerUrl, setLayerUrl] = useState<string>();
+  const [layerUrls, setLayerUrls] = useState<string[]>();
   const [esriApiKey, setEsriApiKey] = useState('');
 
   return (
     <div className="App">
       <div className="content">
-        <Sidebar esriApiKey={esriApiKey} setEsriApiKey={setEsriApiKey} setLayerUrl={setLayerUrl} />
-        { esriApiKey && layerUrl && <MainView layerUrl={layerUrl} esriApiKey={esriApiKey} /> }
+        <Sidebar esriApiKey={esriApiKey} setEsriApiKey={setEsriApiKey} setLayerUrls={setLayerUrls} />
+          { esriApiKey && layerUrls && <MainView layerUrls={layerUrls} esriApiKey={esriApiKey} /> }
       </div>
     </div>
   );

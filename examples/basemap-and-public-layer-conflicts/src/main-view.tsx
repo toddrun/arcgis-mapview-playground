@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import ArcgisMapview from './arcgis-mapview';
 
 interface Props {
-  layerUrl: string;
+  layerUrls: string[];
   esriApiKey: string;
 }
 
-const MainView: React.FC<Props> = ({ layerUrl, esriApiKey }) => {
+const MainView: React.FC<Props> = ({ layerUrls, esriApiKey }) => {
   return (
     <main className="main-view">
-      <ArcgisMapview layerUrl={layerUrl} esriApiKey={esriApiKey} />
+      <ArcgisMapview layerUrls={layerUrls} esriApiKey={esriApiKey} />
     </main>
   );
 };
