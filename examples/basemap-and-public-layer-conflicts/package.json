@@ -1,0 +1,44 @@
+{
+  "name": "basemap-and-public-layer-conflicts",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@arcgis/core": "^4.30.6",
+    "@deck.gl/arcgis": "~8.7.12",
+    "@deck.gl/core": "~8.7.12",
+    "@deck.gl/extensions": "~8.7.12",
+    "@deck.gl/geo-layers": "~8.7.12",
+    "@deck.gl/google-maps": "~8.7.12",
+    "@deck.gl/layers": "~8.7.12",
+    "@deck.gl/mesh-layers": "~8.7.12",
+    "@loaders.gl/core": "^3.0.0 ^3.1.5",
+    "@types/react": "18.2.45",
+    "@types/react-dom": "18.2.18",
+    "gl-matrix": "^3.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "react-scripts": "latest",
+    "typescript": "^5.5.4",
+    "@babel/plugin-proposal-private-property-in-object": "latest"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
