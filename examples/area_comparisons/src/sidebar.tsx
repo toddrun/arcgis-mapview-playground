@@ -1,6 +1,7 @@
 import React from 'react';
 import GeoJson from './functions/geojson';
 import ArcgisCalc from './functions/arcgis_calc';
+import TurfCalc from './functions/turf_calc';
 
 interface Props {
   geojson: string | null,
@@ -12,6 +13,7 @@ const Sidebar: React.FC<Props> = ({geojson, setGeojson}) => (
     <GeoJson geojson={geojson} setGeojson={setGeojson} />
     <hr />
     <ArcgisCalc geojson={geojson} />
+    <TurfCalc geojson={geojson} />
   </div>
 );
 

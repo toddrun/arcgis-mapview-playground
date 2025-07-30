@@ -4,7 +4,9 @@ import { geojsonToArcGIS } from '@terraformer/arcgis';
 
 const ArcgisCalc = ({ geojson }: { geojson: string | null }) => {
   const area = () => {
-    const polygon = new Polygon(geojsonToArcGIS(JSON.parse(geojson)));
+    const parsedGeojson = JSON.parse(geojson);
+
+    const polygon = new Polygon(geojsonToArcGIS(parsedGeojson));
     const areaInSquareMeters = geometryEngine.geodesicArea(polygon, 'square-meters');
     const areaInSquareFeet = geometryEngine.geodesicArea(polygon, 'square-feet');
     return `Area: ${areaInSquareFeet.toFixed(2)} ft² (${areaInSquareMeters.toFixed(2)} m²)`;
