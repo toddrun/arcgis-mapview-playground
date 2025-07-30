@@ -1,14 +1,13 @@
 import React from 'react';
 import ArcgisMapview from './arcgis/arcgis-mapview';
-import { GoToLocation } from './App';
 
 interface Props {
-  location: GoToLocation
+  geojson: string | null
 }
 
-const MainView: React.FC<Props> = ({ location }) => (
+const MainView: React.FC<Props> = ({ geojson }) => (
   <main className="main-view">
-    <ArcgisMapview location={location} />
+    <ArcgisMapview geojson={geojson} />
   </main>
 );
 

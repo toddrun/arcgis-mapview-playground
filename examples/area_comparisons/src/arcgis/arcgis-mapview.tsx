@@ -3,19 +3,22 @@ import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference.js';
 import TileInfo from '@arcgis/core/layers/support/TileInfo.js';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer.js';
-import { GoToLocation } from '../App';
+import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer.js';
+import Polygon from '@arcgis/core/geometry/Polygon.js';
+import Graphic from '@arcgis/core/Graphic.js';
+import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
 
 interface Props {
-  location: GoToLocation
+  geojson: string | null
 }
 
-const ArcgisMapview: React.FC<Props> = ({ location }) => {
+const ArcgisMapview: React.FC<Props> = ({ geojson }) => {
   const mapViewRef = useRef<MapView | null>(null);
   const mapRef = useRef(null);
   const [mapView, setMapView] = useState<MapView|undefined>(undefined);
 
   const MIN_ZOOM = 4;
+  const GRAPHICS_LAYER_ID = 'MY_GRAPHICS_LAYER';
 
   useEffect(() => {
     if (mapRef.current && mapView && mapView.map) {
@@ -24,19 +27,42 @@ const ArcgisMapview: React.FC<Props> = ({ location }) => {
   }, [mapView]);
 
   useEffect(() => {
-    if (location.latitude && location.longitude && location.zoom) {
-      mapView.goTo({
-        center: [location.longitude, location.latitude],
-        zoom: location.zoom
-      })
+    if (geojson && mapView) {
+      const graphicsLayer = mapView.map.findLayerById(GRAPHICS_LAYER_ID) as GraphicsLayer;
+      if (graphicsLayer) {
+        try {
+          graphicsLayer.removeAll();
+
+          const polygon = new Polygon({
+            rings: JSON.parse(geojson).coordinates,
+            spatialReference: SpatialReference.WGS84
+          });
+
+          const graphic = new Graphic({
+            geometry: polygon,
+            symbol: new SimpleFillSymbol({
+              color: [255, 0, 0, 0.5],
+              outline: {
+                color: [255, 0, 0],
+                width: 2
+              }
+            })
+          })
+
+          graphicsLayer.add(graphic);
+          mapView.goTo(polygon.extent.expand(1.5));
+        } catch (err) {
+          console.error(err);
+        }
+      }
     }
-  }, [location, mapView])
+  }, [geojson, mapView]);
 
   useEffect(() => {
     if (mapRef.current) {
       // Create map
       const map = new Map({
-        basemap: 'topo',
+        basemap: 'streets',
       });
 
       // Create view
@@ -53,6 +79,11 @@ const ArcgisMapview: React.FC<Props> = ({ location }) => {
           color: [255, 252, 244, 0.5],
         },
       });
+
+      const graphicsLayer = new GraphicsLayer({
+        id: GRAPHICS_LAYER_ID,
+      });
+      map.add(graphicsLayer);
 
       mapViewRef.current = view;
       setMapView(view);

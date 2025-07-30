@@ -1,15 +1,14 @@
 import React from 'react';
-import GoTo from './functions/go-to';
-import { GoToLocation } from './App';
+import GeoJson from './functions/geojson';
 
 interface Props {
-  location: GoToLocation,
-  setLocation: (GoToLocation) => void
+  geojson: string | null,
+  setGeojson: (geojson: string) => void
 }
 
-const Sidebar: React.FC<Props> = ({location, setLocation}) => (
+const Sidebar: React.FC<Props> = ({geojson, setGeojson}) => (
   <div  className="sidebar">
-    <GoTo location={location} setLocation={setLocation}/>
+    <GeoJson geojson={geojson} setGeojson={setGeojson} />
   </div>
 );
 
