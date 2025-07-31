@@ -1,8 +1,9 @@
 import React from 'react';
 import ArcgisMapview from './arcgis/arcgis-mapview';
+import { Geometry } from 'geojson';
 
 interface Props {
-  geojson: string | null
+  geojson: Geometry | null
 }
 
 const MainView: React.FC<Props> = ({ geojson }) => (

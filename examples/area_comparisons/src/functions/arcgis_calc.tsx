@@ -1,12 +1,11 @@
 import Polygon from '@arcgis/core/geometry/Polygon';
 import * as geometryEngine from '@arcgis/core/geometry/geometryEngine.js';
 import { geojsonToArcGIS } from '@terraformer/arcgis';
+import { Geometry } from 'geojson';
 
-const ArcgisCalc = ({ geojson }: { geojson: string | null }) => {
+const ArcgisCalc = ({ geojson }: { geojson: Geometry | null }) => {
   const area = () => {
-    const parsedGeojson = JSON.parse(geojson);
-
-    const polygon = new Polygon(geojsonToArcGIS(parsedGeojson));
+    const polygon = new Polygon(geojsonToArcGIS(geojson));
     const areaInSquareMeters = geometryEngine.geodesicArea(polygon, 'square-meters');
     const areaInSquareFeet = geometryEngine.geodesicArea(polygon, 'square-feet');
     return `Area: ${areaInSquareFeet.toFixed(2)} ft² (${areaInSquareMeters.toFixed(2)} m²)`;

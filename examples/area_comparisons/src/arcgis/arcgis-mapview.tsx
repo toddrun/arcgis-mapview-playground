@@ -7,9 +7,10 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer.js';
 import Polygon from '@arcgis/core/geometry/Polygon.js';
 import Graphic from '@arcgis/core/Graphic.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
+import { Geometry } from 'geojson';
 
 interface Props {
-  geojson: string | null
+  geojson: Geometry | null
 }
 
 const ArcgisMapview: React.FC<Props> = ({ geojson }) => {
@@ -34,7 +35,8 @@ const ArcgisMapview: React.FC<Props> = ({ geojson }) => {
           graphicsLayer.removeAll();
 
           const polygon = new Polygon({
-            rings: JSON.parse(geojson).coordinates,
+            // @ts-ignore
+            rings: geojson.coordinates,
             spatialReference: SpatialReference.WGS84
           });
 
